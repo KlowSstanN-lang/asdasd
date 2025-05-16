@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Yönetici Paneli - Reverse Community</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <nav>
+    <ul class="nav-menu">
+      <li><a href="anasayfa.html">Ana Sayfa</a></li>
+      <li><a href="profil.html">Profil</a></li>
+      <li><a href="duyuru.html">Duyurular</a></li>
+      <li><a href="forum.html">Forum</a></li>
+      <li><a href="iletisim.html">İletişim</a></li>
+      <li><a href="#" onclick="logout()">Çıkış Yap</a></li>
+    </ul>
+  </nav>
+
+  <div class="container">
+    <h1>Yönetici Paneli</h1>
+    <div class="content-box" id="admin-panel">
+      <table style="width: 100%; border-collapse: collapse;">
+        <thead>
+          <tr>
+            <th>Kullanıcı Adı</th>
+            <th>Email</th>
+            <th>Rütbe</th>
+            <th>Kayıt Tarihi</th>
+            <th>İşlemler</th>
+          </tr>
+        </thead>
+        <tbody id="user-list"></tbody>
+      </table>
+    </div>
+  </div>
+
+  <script src="script.js"></script>
+  <script>
+    const currentUser = getLoggedInUser();
+    if (!currentUser || currentUser.role !== 'admin') {
+      alert("Bu sayfaya yalnızca yöneticiler erişebilir.");
+      window.location.href = "index.html";
+    }
+
+    const userListContainer = document.getElementById("user-list");
+    const users = JSON.parse(localStorage.getItem("users")) || [];
+
+    function renderUsers() {
+      userListContainer.innerHTML = "";
+      users.forEach((user, index) => {
+        const row = document.createElement("tr");
+        row.innerHTML = `
+          <td>${user.username}</td>
+          <td>${user.email}</td>
+          <td>${user.role}</td>
+          <td>${new Date(user.joinedAt).toLocaleDateString()}</td>
+          <td>
+            <button onclick="changeRole(${index}, 'admin')">Yükselt</button>
+            <button onclick="changeRole(${index}, 'üye')">Düşür</button>
+            <button onclick="deleteUser(${index})" style="background:red;color:white;">Sil</button>
+          </td>
+        `;
+        userListContainer.appendChild(row);
+      });
+    }
+
+    function changeRole(index, newRole) {
+      if (users[index].username === currentUser.username) {
+        alert("Kendi rütbenizi değiştiremezsiniz.");
+        return;
+      }
+      users[index].role = newRole;
+      localStorage.setItem("users", JSON.stringify(users));
+      renderUsers();
+    }
+
+    function deleteUser(index) {
+      if (users[index].username === currentUser.username) {
+        alert("Kendi hesabınızı silemezsiniz.");
+        return;
+      }
+      if (confirm(`${users[index].username} kullanıcısını silmek istiyor musunuz?`)) {
+        users.splice(index, 1);
+        localStorage.setItem("users", JSON.stringify(users));
+        renderUsers();
+      }
+    }
+
+    renderUsers();
+  </script>
+</body>
+</html>

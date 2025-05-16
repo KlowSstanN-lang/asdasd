@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Duyurular</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <header>
+        <h1>Duyurular</h1>
+        <nav>
+            <a href="/anasayfa.html">Ana Sayfa</a>
+            <a href="/profil.html">Profil</a>
+            <a href="/forum.html">Forum</a>
+            <a href="/iletisim.html">İletişim</a>
+        </nav>
+    </header>
+    <main>
+        <h2>Son Duyurular</h2>
+        <ul>
+            <li><strong>Duyuru 1:</strong> Toplantı yarın saat 14:00'da.</li>
+            <li><strong>Duyuru 2:</strong> Yeni özellikler eklendi, kontrol edin!</li>
+        </ul>
+    </main>
+    <script src="script.js"></script>
+<script>
+  const user = getLoggedInUser();
+  if (!user) window.location.href = "index.html";
+  if (user.role === "admin") {
+    document.body.insertAdjacentHTML('beforeend', `
+      <div class="content-box">
+        <h3>Duyuru Ekle</h3>
+        <input type="text" id="duyuru-baslik" placeholder="Başlık">
+        <textarea id="duyuru-icerik" placeholder="İçerik"></textarea>
+        <button onclick="duyuruEkle()">Duyuru Ekle</button>
+      </div>
+    `);
+  }
+  function duyuruEkle() {
+    const baslik = document.getElementById("duyuru-baslik").value;
+    const icerik = document.getElementById("duyuru-icerik").value;
+    if (!baslik || !icerik) return alert("Tüm alanlar zorunlu.");
+    addDuyuru(baslik, icerik);
+    location.reload();
+  }
+  const container = document.createElement("div");
+  container.id = "duyurular-container";
+  document.body.appendChild(container);
+  renderDuyurular("duyurular-container");
+</script>
+
+</body>
+</html>

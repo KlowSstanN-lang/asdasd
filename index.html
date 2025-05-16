@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Reverse Community - Giriş</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body class="centered">
+  <img src="logo.png" alt="Reverse Community Logosu" class="logo" />
+  <div class="box">
+    <h2>Giriş Yap</h2>
+    <input type="text" id="login-username" placeholder="Kullanıcı Adı">
+    <input type="password" id="login-password" placeholder="Şifre">
+    <button onclick="login()">Giriş Yap</button>
+    <p><a href="#" onclick="toggleRegister()">Kayıt Ol</a></p>
+    <div id="register-section" class="hidden">
+      <h2>Kayıt Ol</h2>
+      <input type="text" id="register-username" placeholder="Kullanıcı Adı">
+      <input type="email" id="register-email" placeholder="E-posta">
+      <input type="password" id="register-password" placeholder="Şifre">
+      <button onclick="register()">Kayıt Ol</button>
+    </div>
+  </div>
+  <script src="script.js"></script>
+</body>
+</html>

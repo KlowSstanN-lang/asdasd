@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Profil - Reverse Community</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <nav>
+    <ul class="nav-menu">
+      <li><a href="anasayfa.html">Ana Sayfa</a></li>
+      <li><a href="duyuru.html">Duyurular</a></li>
+      <li><a href="forum.html">Forum</a></li>
+      <li><a href="iletisim.html">İletişim</a></li>
+      <li><a href="yonetici.html" id="admin-link" style="display: none;">Yönetici Girişi</a></li>
+      <li><a href="#" onclick="logout()">Çıkış Yap</a></li>
+    </ul>
+  </nav>
+
+  <div class="container">
+    <h1>Profilim</h1>
+    <div class="content-box">
+      <p><strong>Kullanıcı Adı:</strong> <span id="username"></span></p>
+      <p><strong>Email:</strong> <span id="email"></span></p>
+      <p><strong>Rütbe:</strong> <span id="role"></span></p>
+
+      <h3>Şifre Değiştir</h3>
+      <input type="password" id="old-password" placeholder="Eski Şifre">
+      <input type="password" id="new-password" placeholder="Yeni Şifre">
+      <button onclick="changePassword()">Şifreyi Güncelle</button>
+    </div>
+  </div>
+
+  <script src="script.js"></script>
+  <script>
+    const user = getLoggedInUser();
+    if (!user) {
+      window.location.href = 'index.html';
+    }
+
+    document.getElementById("username").textContent = user.username;
+    document.getElementById("email").textContent = user.email;
+    document.getElementById("role").textContent = user.role;
+
+    if (user.role === "admin") {
+      document.getElementById("admin-link").style.display = "inline-block";
+    }
+
+    function changePassword() {
+      const oldPass = document.getElementById("old-password").value;
+      const newPass = document.getElementById("new-password").value;
+
+      if (oldPass !== user.password) {
+        alert("Eski şifre yanlış.");
+        return;
+      }
+
+      if (newPass.length < 4) {
+        alert("Yeni şifre en az 4 karakter olmalıdır.");
+        return;
+      }
+
+      const users = JSON.parse(localStorage.getItem("users"));
+      const index = users.findIndex(u => u.username === user.username);
+      users[index].password = newPass;
+      localStorage.setItem("users", JSON.stringify(users));
+
+      user.password = newPass;
+      localStorage.setItem("loggedInUser", JSON.stringify(user));
+      alert("Şifre başarıyla güncellendi.");
+    }
+  </script>
+</body>
+</html>

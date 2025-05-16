@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Forum</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <header>
+        <h1>Forum</h1>
+        <nav>
+            <a href="/anasayfa.html">Ana Sayfa</a>
+            <a href="/profil.html">Profil</a>
+            <a href="/duyuru.html">Duyurular</a>
+            <a href="/iletisim.html">İletişim</a>
+        </nav>
+    </header>
+    <main>
+        <h2>Konular</h2>
+        <ul>
+            <li><a href="#">Konu Başlığı 1</a></li>
+            <li><a href="#">Konu Başlığı 2</a></li>
+        </ul>
+        <button>Yeni Konu Aç</button>
+    </main>
+    <script src="script.js"></script>
+<script>
+  const user = getLoggedInUser();
+  if (!user) window.location.href = "index.html";
+
+  const forumlar = loadForumlar();
+  const main = document.querySelector("main");
+
+  forumlar.forEach((konu, index) => {
+    const div = document.createElement("div");
+    div.className = "content-box";
+    div.innerHTML = `
+      <h3>${konu.baslik}</h3>
+      <p>${konu.icerik}</p>
+      <small>${konu.yazar} (${konu.rol}) - ${konu.tarih}</small>
+      <div>
+        <h4>Yorumlar</h4>
+        <ul>${konu.yorumlar.map((y, i) => `
+          <li>${y.yorum} - ${y.yazar} (${y.rol})
+            ${user.role === 'admin' ? `<button onclick="deleteYorum(${index}, ${i})">Sil</button>` : ""}
+          </li>`).join('')}
+        </ul>
+        <input type="text" id="yorum-${index}" placeholder="Yorumunuz">
+        <button onclick="ekleYorum(${index})">Yorum Ekle</button>
+      </div>
+      ${user.role === 'admin' ? `<button onclick="deleteKonu(${index})">Konuyu Sil</button>` : ""}
+    `;
+    main.appendChild(div);
+  });
+
+  document.querySelector("button").addEventListener("click", () => {
+    const baslik = prompt("Konu Başlığı:");
+    const icerik = prompt("Konu İçeriği:");
+    if (baslik && icerik) {
+      addKonu(baslik, icerik);
+      location.reload();
+    }
+  });
+
+  function ekleYorum(index) {
+    const input = document.getElementById("yorum-" + index);
+    if (!input.value) return;
+    addYorum(index, input.value);
+    location.reload();
+  }
+</script>
+</body>
+</html>

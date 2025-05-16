@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Reverse Community - Anasayfa</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <nav>
+    <ul class="nav-menu">
+      <li><a href="profil.html">Profil</a></li>
+      <li><a href="duyuru.html">Duyurular</a></li>
+      <li><a href="forum.html">Forum</a></li>
+      <li><a href="iletisim.html">İletişim</a></li>
+      <li><a href="yonetici.html" id="admin-link" style="display:none;">Yönetici Girişi</a></li>
+      <li><a href="#" id="logout-btn">Çıkış Yap</a></li>
+    </ul>
+  </nav>
+
+  <div class="container centered">
+    <h1>Reverse Community'ye Hoşgeldiniz!</h1>
+
+    <section id="duyurular-section" class="content-box">
+      <h2>Güncel Duyurular</h2>
+      <div id="duyurular-list"></div>
+    </section>
+
+    <section id="hakkimizda-section" class="content-box">
+      <h2>Topluluk Hakkında</h2>
+      <p>
+        Reverse Community, teknoloji ve yazılım tutkunları için oluşturulmuş aktif bir topluluktur. Burada birlikte öğrenir, paylaşır ve gelişiriz.
+      </p>
+      <h3>Yetkili Kişiler</h3>
+      <ul id="yetkililer-list"></ul>
+    </section>
+  </div>
+  <script src="script.js"></script>
+<script>
+  const user = getLoggedInUser();
+  if (!user) {
+    window.location.href = "index.html";
+  }
+  if (user.role === "admin") {
+    document.getElementById("admin-link").style.display = "inline-block";
+  }
+  renderDuyurular("duyurular-list");
+  renderYetkililer("yetkililer-list");
+  document.getElementById("logout-btn").addEventListener("click", logout);
+</script>
+</body>
+</html>

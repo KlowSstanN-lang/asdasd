@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>İletişim - Reverse Community</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <nav>
+    <ul class="nav-menu">
+      <li><a href="anasayfa.html">Ana Sayfa</a></li>
+      <li><a href="profil.html">Profil</a></li>
+      <li><a href="duyuru.html">Duyurular</a></li>
+      <li><a href="forum.html">Forum</a></li>
+      <li><a href="yonetici.html" id="admin-link" style="display: none;">Yönetici Girişi</a></li>
+      <li><a href="#" onclick="logout()">Çıkış Yap</a></li>
+    </ul>
+  </nav>
+
+  <div class="container">
+    <h1>İletişim</h1>
+    <div class="content-box">
+      <p><strong>Facebook:</strong> <a href="https://facebook.com/reversecommunity" target="_blank">facebook.com/reversecommunity</a></p>
+      <p><strong>Telefon:</strong> +90 555 123 45 67</p>
+      <p><strong>Email:</strong> <a href="mailto:destek@reversecommunity.org">destek@reversecommunity.org</a></p>
+      <p><strong>Discord:</strong> <a href="https://discord.gg/reversecommunity" target="_blank">discord.gg/reversecommunity</a></p>
+    </div>
+  </div>
+
+  <script src="script.js"></script>
+  <script>
+    const user = getLoggedInUser();
+    if (!user) {
+      window.location.href = "index.html";
+    }
+
+    if (user.role === "admin") {
+      document.getElementById("admin-link").style.display = "inline-block";
+    }
+  </script>
+</body>
+</html>
